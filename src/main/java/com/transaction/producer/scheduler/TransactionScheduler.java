@@ -3,6 +3,8 @@ package com.transaction.producer.scheduler;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,8 @@ import com.transaction.producer.vo.TransactionVo;
 @EnableScheduling
 @Configuration
 public class TransactionScheduler {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionScheduler.class);
 
 	private final WebComponentConfig webComponentConfig;
 	private final CreditCardNumberGenerator creditCardNumberGenerator;
@@ -36,6 +40,7 @@ public class TransactionScheduler {
 	
 	@Scheduled(cron = "*/10 * * * * *") // every 10 seconds
 	public void initiateTransaction() {
+		LOGGER.info("Scheduler invoked for new transaction :: start");
 		String bin = bins[ ((int)(Math.random()*10)) ];
 		TransactionVo transactionVo = new TransactionVo();
 		transactionVo.setTrandactionId(System.currentTimeMillis());
@@ -51,9 +56,10 @@ public class TransactionScheduler {
 		requestHeaders.set("Content-Type", "application/json");
 //		requestHeaders.set("Authorization", "Bearer your-token");
 		HttpEntity<TransactionVo> requestEntity = new HttpEntity<TransactionVo>(transactionVo, requestHeaders);
-		System.out.println("requestEntity :: " + requestEntity);
+		LOGGER.info("requestEntity :: " + requestEntity);
 		RestTemplate restTemplate = webComponentConfig.getRestTemplate();
 		ResponseEntity<?> responseEntity = restTemplate.postForEntity(url, requestEntity, TransactionVo.class);
-		System.out.println("responseEntity :: " + responseEntity);
+		LOGGER.info("responseEntity :: " + responseEntity);
+		LOGGER.info("Scheduler invoked for new transaction :: complete");
 	}
 }

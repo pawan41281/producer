@@ -84,11 +84,11 @@ public class TransactionVo {
 		this.status = status;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "TransactionVo [id=" + id + ", trandactionId=" + trandactionId + ", cardNumber=" + cardNumber
-//				+ ", amount=" + amount + ", timestamp=" + timestamp + ", merchantId=" + merchantId + ", status="
-//				+ status + "]";
-//	}
+	@Override
+	public String toString() {
+		return "TransactionVo [id=" + id + ", trandactionId=" + trandactionId + ", cardNumber=" + cardNumber
+				+ ", amount=" + amount + ", timestamp=" + timestamp + ", merchantId=" + merchantId + ", status="
+				+ status + "]";
+	}
 
 }
